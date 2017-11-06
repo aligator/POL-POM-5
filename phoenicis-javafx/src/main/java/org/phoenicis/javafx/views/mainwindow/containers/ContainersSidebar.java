@@ -48,8 +48,14 @@ public class ContainersSidebar extends Sidebar {
     // a button group containing a button for each installed container
     private SidebarToggleGroup<ContainerCategoryDTO> categoryView;
 
+    private SidebarGroup toolsGroup;
+    private SidebarButton newContainerButton;
+
     // widget to switch between the different list widgets in the center view
     private ListWidgetChooser<ContainerDTO> listWidgetChooser;
+
+    // consumers called after a tool should be run
+    private Runnable onNewContainerSelection;
 
     // consumer called when a container is selected
     private Runnable onAllCategorySelection;
@@ -74,8 +80,9 @@ public class ContainersSidebar extends Sidebar {
         this.populateSearchBar();
         this.populateCategories();
         this.populateListWidgetChooser(availableContainers);
+        this.populateTools();
 
-        this.centerContent = new SidebarScrollPane(categoryView);
+        this.centerContent = new SidebarScrollPane(toolsGroup, new SidebarSpacer(), categoryView);
 
         this.setTop(searchBar);
         this.setCenter(centerContent);
@@ -131,6 +138,16 @@ public class ContainersSidebar extends Sidebar {
             this.javaFxSettingsManager.setContainersListType(type);
             this.javaFxSettingsManager.save();
         });
+    }
+
+    /**
+     * This method populates the tools button group.
+     */
+    private void populateTools() {
+        this.newContainerButton = new SidebarButton(tr("Create Container"));
+        newContainerButton.setOnMouseClicked(event -> onNewContainerSelection.run());
+
+        this.toolsGroup = new SidebarGroup(tr("Tools"), newContainerButton);
     }
 
     /**
@@ -195,5 +212,14 @@ public class ContainersSidebar extends Sidebar {
      */
     public void setOnCategorySelection(Consumer<ContainerCategoryDTO> onCategorySelection) {
         this.onCategorySelection = onCategorySelection;
+    }
+
+    /**
+     * This method updates the runnable, that is called when the "Create Container" button in the tools section has been clicked.
+     *
+     * @param onNewContainerSelection
+     */
+    public void setOnNewContainerSelection(Runnable onNewContainerSelection) {
+        this.onNewContainerSelection = onNewContainerSelection;
     }
 }

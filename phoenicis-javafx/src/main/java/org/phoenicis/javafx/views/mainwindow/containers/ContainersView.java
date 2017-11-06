@@ -22,8 +22,11 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import org.phoenicis.containers.dto.ContainerCategoryDTO;
 import org.phoenicis.containers.dto.ContainerDTO;
+import org.phoenicis.containers.dto.WinePrefixContainerDTO;
 import org.phoenicis.javafx.settings.JavaFxSettingsManager;
 import org.phoenicis.javafx.views.common.ThemeManager;
 import org.phoenicis.javafx.views.common.lists.ExpandedList;
@@ -31,9 +34,14 @@ import org.phoenicis.javafx.views.common.lists.PhoenicisFilteredList;
 import org.phoenicis.javafx.views.common.widgets.lists.CombinedListWidget;
 import org.phoenicis.javafx.views.common.widgets.lists.ListWidgetEntry;
 import org.phoenicis.javafx.views.mainwindow.ui.MainWindowView;
+import org.phoenicis.scripts.ui.InstallationType;
+import org.phoenicis.scripts.wizard.Wizard;
+import org.phoenicis.scripts.wizard.WizardConfiguration;
 
+import java.io.File;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import static org.phoenicis.configuration.localisation.Localisation.tr;
@@ -101,7 +109,18 @@ public class ContainersView extends MainWindowView<ContainersSidebar> {
         this.sidebar.setOnCategorySelection(category -> closeDetailsView());
         this.sidebar.setOnAllCategorySelection(this::closeDetailsView);
 
+        // set the tools runables
+        this.sidebar.setOnNewContainerSelection(this::addContainer);
+
         this.setSidebar(this.sidebar);
+    }
+
+    private void addContainer() {
+
+
+           /* containers.add(new WinePrefixContainerDTO.Builder()
+                    .build());*/
+
     }
 
     /**
